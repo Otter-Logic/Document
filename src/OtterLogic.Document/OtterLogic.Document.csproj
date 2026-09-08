@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>OtterLogic.Document</RootNamespace>
+    <AssemblyName>OtterLogic.Document</AssemblyName>
+    <!-- A domain: its own types and its own logic, together. No UI, no
+         Grasshopper, and no dependency on any sibling domain.
+
+         The document tables are RhinoCommon, and reading them is the whole
+         point of this domain, so RhinoCommon is a reference here as it is in
+         every other domain. What stays out is everything above it: components,
+         canvas drawing, commands, panels. -->
+
+    <IsPackable>true</IsPackable>
+    <PackageId>OtterLogic.Document</PackageId>
+    <Description>Reading the Rhino document - layers, objects, references - built on OtterLogic.Core.</Description>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Otter-Logic/Document_Tool</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Otter-Logic/Document_Tool</RepositoryUrl>
+    <PackageTags>rhino;rhino3d;grasshopper;computational-design</PackageTags>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RhinoCommon" Version="$(RhinoVersion)" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <!-- A sibling checkout of Core wins; the published package is the
+       fallback. Clone the repos side by side and the inner loop is unchanged;
+       CI has no siblings, so it builds against the published package. -->
+  <Choose>
+    <When Condition="Exists('$(MSBuildThisFileDirectory)..\..\..\Core\src\OtterLogic.Core\OtterLogic.Core.csproj')">
+      <ItemGroup>
+        <ProjectReference Include="..\..\..\Core\src\OtterLogic.Core\OtterLogic.Core.csproj" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <PackageReference Include="OtterLogic.Core" Version="[$(Version)]" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+
+</Project>
