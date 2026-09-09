@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: Document_Tool
+          path: Document
 
       - uses: actions/checkout@v4
         with:
@@ -33,4 +33,4 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Build
-        run: dotnet build Document_Tool/OtterLogic.slnx -c Release
+        run: dotnet build Document/OtterLogic.slnx -c Release
